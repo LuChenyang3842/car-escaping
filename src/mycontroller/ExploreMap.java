@@ -45,6 +45,7 @@ public class ExploreMap {
 			Coordinate key = (Coordinate) entry.getKey();
 			MapTile val = (MapTile) entry.getValue();
 			RecordTile rt = new RecordTile(val);
+			rt.setExplored(false);
 			newMap.put(key, rt);
 		}
 	}
