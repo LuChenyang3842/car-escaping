@@ -3,19 +3,17 @@ package mycontroller;
 import tiles.MapTile;
 
 public class RecordTile {
-	private tiles.MapTile.Type tileType;
+
+	private MapTile mapTile;
 	private boolean explored;
 	public RecordTile(MapTile mapTile){
-		this.tileType = mapTile.getType();
+		this.mapTile = mapTile;
 		this.explored = true;
 	}
 	
-	public tiles.MapTile.Type getType(){
-		return tileType;}
+	public MapTile getMapTile(){
+		return mapTile;}
 	public boolean getExplored() {
 		return explored;}
-		
-	public Boolean isType(MapTile.Type tileType) {
-		return this.tileType == tileType;
-	}
+
 }
