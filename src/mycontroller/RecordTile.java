@@ -14,4 +14,8 @@ public class RecordTile {
 		return tileType;}
 	public boolean getExplored() {
 		return explored;}
+		
+	public Boolean isType(MapTile.Type tileType) {
+		return this.tileType == tileType;
+	}
 }
