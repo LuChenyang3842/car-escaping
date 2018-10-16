@@ -3,7 +3,7 @@ package mycontroller;
 import java.util.ArrayList;
 import utilities.Coordinate;
 
-public abstract class Strategy {
+public abstract class RoutingStrategy {
 	public void getSuccessor(){
 		
 	}
