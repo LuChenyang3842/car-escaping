@@ -16,7 +16,8 @@ public abstract class RoutingStrategy {
 	public void heuristic() {
 		
 	}
-	public abstract void getGoal();
+	public abstract boolean isGoal(Coordinate c);
+	
 	
 
 }
