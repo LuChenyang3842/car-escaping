@@ -11,8 +11,15 @@ public class MyAIController extends CarController{
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
+        //update the map with current view
+		ExploredMap.getInstance().updateMap(getView());
 		
+		//choose strategy
+		if(){
+		    
+		}else if(){
+		    ...
+		}
 	}
 
 }
