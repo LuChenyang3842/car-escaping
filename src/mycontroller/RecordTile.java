@@ -15,5 +15,8 @@ public class RecordTile {
 		return mapTile;}
 	public boolean getExplored() {
 		return explored;}
-
+    
+    public void setExplored(boolean b) {
+        this.explored = b;
+    }
 }
