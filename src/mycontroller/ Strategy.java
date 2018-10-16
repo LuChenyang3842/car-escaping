@@ -8,10 +8,6 @@ public abstract class Strategy {
 		
 	}
 	
-	public void getGoal() {
-		
-	}
-	
 	public void findPath() {
 		
 	}
@@ -20,4 +16,5 @@ public abstract class Strategy {
 		
 	}
 	
+    public abstract void getGoal();
 }
