@@ -30,7 +30,7 @@ public class ExploreMap {
 			Map.Entry entry = (Map.Entry) iter.next();
 			Coordinate key = (Coordinate) entry.getKey();
 			MapTile val = (MapTile) entry.getValue();
-			if(!newMap.containsKey(key)) {
+			if(!newMap.get(key).getExplored()) {
 				RecordTile rt = new RecordTile(val);
 				newMap.put(key, rt);
 			}
