@@ -1,5 +1,6 @@
 package mycontroller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -9,10 +10,12 @@ import tiles.LavaTrap;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.Car;
+import world.WorldSpatial.Direction;
 
 public class MyAIController extends CarController{
 	private HashMap<Coordinate, Integer> newKeyLocation;
 	private RoutingStrategy routingStrategy;
+	private int i = 0;
 	public MyAIController(Car car) {
 		super(car);
 		newKeyLocation = new HashMap<Coordinate, Integer>();
@@ -45,6 +48,7 @@ public class MyAIController extends CarController{
 		
 		ArrayList<Coordinate> temp  = routingStrategy.AstarPathFinding(); //to be continued....
 		drive(currentPosition, temp.get(0));
+		System.out.println (temp.get(0));
 		
 		}
 		
@@ -59,10 +63,11 @@ public class MyAIController extends CarController{
 		int goalX = goal.x;
 		int goalY = goal.y;
 		if (goalX == startX + 1) {
-			goWest();
+			System.out.println (1);
+			goEast();
 		}
 		else if (goalX == startX - 1) {
-			goEast();
+			goWest();
 		}
 		else if(goalY == startY+ 1) {
 			goNorth();
@@ -79,14 +84,19 @@ public class MyAIController extends CarController{
 		switch(currentOrientation){
 		case EAST:
 			turnRight();
+			break;
 		case NORTH:
 			applyReverseAcceleration();
+			break;
 		case SOUTH:
 			applyForwardAcceleration();
+			break;
 		case WEST:
 			turnLeft();
+			break;
 		default:
 			applyBrake();
+			break;
 		}
 		
 		// TODO Auto-generated method stub
@@ -98,14 +108,19 @@ public class MyAIController extends CarController{
 		switch(currentOrientation){
 		case EAST:
 			turnLeft();
+			break;
 		case NORTH:
 			applyForwardAcceleration();
+			break;
 		case SOUTH:
 			applyReverseAcceleration();
+			break;
 		case WEST:
 			turnRight();
+			break;
 		default:
 			applyBrake();
+			break;
 		}
 		
 	}
@@ -115,14 +130,19 @@ public class MyAIController extends CarController{
 		switch(currentOrientation){
 		case EAST:
 			applyForwardAcceleration();
+			break;
 		case NORTH:
 			turnRight();
+			break;
 		case SOUTH:
 			turnLeft();
+			break;
 		case WEST:
 			applyReverseAcceleration();
+			break;
 		default:
 			applyBrake();
+			break;
 		}
 		
 	}
@@ -132,18 +152,22 @@ public class MyAIController extends CarController{
 		switch(currentOrientation){
 		case EAST:
 			applyReverseAcceleration();
+			break;
 		case NORTH:
 			turnLeft();
+			break;
 		case SOUTH:
 			turnRight();
+			break;
 		case WEST:
 			applyForwardAcceleration();
+			break;
 		default:
 			applyBrake();
+			break;
 		}
 		
 	}
-
 	
 	//remove the key we already have
 	private void removeDuplicateKeys() {
