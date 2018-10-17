@@ -91,7 +91,7 @@ public abstract class RoutingStrategy {
 			}
 			MapTile successorTile = ExploreMap.getInstance().getExploredMap().get(successorCoordinate).getMapTile();
 			if (!successorTile.isType(MapTile.Type.WALL)) {
-				if (successorTile.isType(MapTile.Type.TRAP) && ((TrapTile) currentTile).getTrap().equals("mud")) {
+				if (successorTile.isType(MapTile.Type.TRAP) && ((TrapTile) successorTile).getTrap().equals("mud")) {
 					continue; // if MapTile type is mud, then it can not be added into successor
 				}
 				Node successorNode = new Node(successorCoordinate, direction);
