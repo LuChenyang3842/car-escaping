@@ -1,25 +1,34 @@
 package mycontroller;
 
+import tiles.LavaTrap;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.WorldSpatial.Direction;
 
-//Strategy to find the exit, the goal is to find the exit
-public class FindExitStrategy extends RoutingStrategy {
-	
-	public FindExitStrategy(Coordinate currentPosition, Direction orientation) {
-		super(currentPosition, orientation);
+//Strategy to find the key, the goal is to get the key
+public class FindKeyStrategy extends RoutingStrategy {
+	int key;
+	public FindKeyStrategy(Coordinate coordinate, Direction currentOrientation, int targetKey) {
+		super(coordinate, currentOrientation);
+		key = targetKey;
 	}
+	
+	
 
-	//check whether the coordinate is an exit
+	//check whether the coordinate has a key
 	@Override
 	public boolean isGoal(Coordinate c) {
 		RecordTile recordTile = ExploreMap.getInstance().getExploredMap().get(c);
 		MapTile mapTile = recordTile.getMapTile();
-		if (mapTile.isType(MapTile.Type.FINISH)) {
-			return true;
-		} else {
-			return false;
-		}
+		System.out.println(mapTile.getType().toString() + recordTile.getExplored());
+		if (mapTile instanceof LavaTrap) {
+			LavaTrap lavaTile = (LavaTrap) mapTile;
+			if (lavaTile.getKey() == key) {
+				System.out.println(c.toString() + "find goal");
+				return true;
+			}
+		} 
+		
+		return false;
 	}
 }
