@@ -38,12 +38,112 @@ public class MyAIController extends CarController{
 		}*/
 		
 		routingStrategy = new ExploreStrategy(currentPosition, getOrientation()); //for testing
+		if (i == 0) {
+			applyForwardAcceleration();
+			i = i + 1;
+		}else {
 		
-		routingStrategy.AstarPathFinding(); //to be continued....
+		ArrayList<Coordinate> temp  = routingStrategy.AstarPathFinding(); //to be continued....
+		drive(currentPosition, temp.get(0));
+		
+		}
 		
 		
 		
 	}
+	
+	
+	private void drive(Coordinate start, Coordinate goal) {
+		int startX =  start.x;
+		int startY = start.y;
+		int goalX = goal.x;
+		int goalY = goal.y;
+		if (goalX == startX + 1) {
+			goWest();
+		}
+		else if (goalX == startX - 1) {
+			goEast();
+		}
+		else if(goalY == startY+ 1) {
+			goNorth();
+		}else if (goalY == startY- 1) {
+			goSouth();
+		}else {
+			applyBrake();
+		}
+		
+	}
+	
+	private void goSouth() {
+		Direction currentOrientation = getOrientation();
+		switch(currentOrientation){
+		case EAST:
+			turnRight();
+		case NORTH:
+			applyReverseAcceleration();
+		case SOUTH:
+			applyForwardAcceleration();
+		case WEST:
+			turnLeft();
+		default:
+			applyBrake();
+		}
+		
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void goNorth() {
+		Direction currentOrientation = getOrientation();
+		switch(currentOrientation){
+		case EAST:
+			turnLeft();
+		case NORTH:
+			applyForwardAcceleration();
+		case SOUTH:
+			applyReverseAcceleration();
+		case WEST:
+			turnRight();
+		default:
+			applyBrake();
+		}
+		
+	}
+
+	private void goEast() {
+		Direction currentOrientation = getOrientation();
+		switch(currentOrientation){
+		case EAST:
+			applyForwardAcceleration();
+		case NORTH:
+			turnRight();
+		case SOUTH:
+			turnLeft();
+		case WEST:
+			applyReverseAcceleration();
+		default:
+			applyBrake();
+		}
+		
+	}
+
+	private void goWest() {
+		Direction currentOrientation = getOrientation();
+		switch(currentOrientation){
+		case EAST:
+			applyReverseAcceleration();
+		case NORTH:
+			turnLeft();
+		case SOUTH:
+			turnRight();
+		case WEST:
+			applyForwardAcceleration();
+		default:
+			applyBrake();
+		}
+		
+	}
+
 	
 	//remove the key we already have
 	private void removeDuplicateKeys() {
