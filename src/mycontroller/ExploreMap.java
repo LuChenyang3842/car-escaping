@@ -8,7 +8,7 @@ import tiles.MapTile;
 import utilities.Coordinate;
 
 public class ExploreMap {
-	private HashMap<Coordinate, RecordTile> newMap;
+	private HashMap<Coordinate, RecordTile> newMap = new HashMap<Coordinate, RecordTile>();
 	public static ExploreMap instance;
 	
 	public ExploreMap() {
@@ -30,7 +30,7 @@ public class ExploreMap {
 			Map.Entry entry = (Map.Entry) iter.next();
 			Coordinate key = (Coordinate) entry.getKey();
 			MapTile val = (MapTile) entry.getValue();
-			if(!newMap.get(key).getExplored()) {
+			if(newMap.containsKey(key) && !newMap.get(key).getExplored()) {
 				RecordTile rt = new RecordTile(val);
 				newMap.put(key, rt);
 			}
