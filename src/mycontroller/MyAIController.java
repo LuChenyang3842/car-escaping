@@ -28,23 +28,60 @@ public class MyAIController extends CarController {
 		HashMap<Coordinate, MapTile> currentView = getView();
 		Coordinate currentPosition = new Coordinate(getPosition());
 		findKeys(currentView);
-		removeDuplicateKeys();
+		boolean heal = findHealthTrap(currentView);
+		//removeDuplicateKeys();
 		ExploreMap.getInstance().updateMap(currentView);
 		HashMap<Coordinate, RecordTile> myMap = ExploreMap.getInstance().getExploredMap();
-		if (i == 0) {
-			applyForwardAcceleration();
-			i = i + 1;
-		} else {
-
-			if (!newKeyLocation.isEmpty()) {
-				routingStrategy = new KeyMixStrategy(currentPosition, getOrientation(), getHealth(), newKeyLocation);
+		MapTile mapTile = myMap.get(currentPosition).getMapTile();
+		ArrayList<Coordinate> temp = new ArrayList<Coordinate>();
+		
+		if ((mapTile instanceof HealthTrap && (getHealth() < 100)) || ((getHealth() < 50) && heal)) {
+			routingStrategy = new HealStrategy(currentPosition, getOrientation());
+			temp  = routingStrategy.AstarPathFinding(); //to be continued....				
+			if (temp.size() != 0) {
+				drive(currentPosition, temp.get(0));
+			}
+		}
+		
+		if (temp.size() == 0) {
+			if(!newKeyLocation.isEmpty()) {
+				System.out.println(4);
+				//routingStrategy = new KeyMixStrategy(currentPosition, getOrientation(), getHealth(), newKeyLocation);			
+				routingStrategy = new FindKeyStrategy(currentPosition, getOrientation(), getKeys());
 			} else if (getKeys().size() == numKeys()) {
+				System.out.println(5);
 				routingStrategy = new ExitMixStrategy(currentPosition, getOrientation(), getHealth());
 			} else {
+				System.out.println(6);
 				routingStrategy = new ExploreStrategy(currentPosition, getOrientation());
+			}
+			temp  = routingStrategy.AstarPathFinding();
+			if (temp.size() != 0) {	
+				drive(currentPosition, temp.get(0));
+			}
+		}
+		
+		
+		//routingStrategy = new ExploreStrategy(currentPosition, getOrientation()); //for testing
+		if (getSpeed() == 0 && getHealth() == 100) {
+			applyForwardAcceleration();
+		}
+		if (temp.size() == 0) {
+			if (getKeys().size() == numKeys()) {
+				System.out.println(7);
+				routingStrategy = new ExitMixStrategy(currentPosition, getOrientation(), getHealth());
+			} else {
+				System.out.println(8);
+				routingStrategy = new ExploreStrategy(currentPosition, getOrientation());
+			}
+			temp  = routingStrategy.AstarPathFinding();
+			if (temp.size() != 0) {	
+				drive(currentPosition, temp.get(0));
 			}
 		}
 
+		System.out.println("i:              "+ i);
+		i++;
 	}
 
 
