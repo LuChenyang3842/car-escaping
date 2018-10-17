@@ -31,16 +31,15 @@ public class MyAIController extends CarController{
 		ExploreMap.getInstance().updateMap(currentView);
 		HashMap<Coordinate, RecordTile> myMap = ExploreMap.getInstance().getExploredMap();
 		
-		//not done
-		/*if(!newKeyLocation.isEmpty()) {
+		if(!newKeyLocation.isEmpty()) {
 			routingStrategy = new KeyMixStrategy(currentPosition, getOrientation(), getHealth(), newKeyLocation);
 		} else if (getKeys().size() == numKeys()) {
 			routingStrategy = new ExitMixStrategy(currentPosition, getOrientation(), getHealth());
 		} else {
 			routingStrategy = new ExploreStrategy(currentPosition, getOrientation());
-		}*/
+		}
 		
-		routingStrategy = new ExploreStrategy(currentPosition, getOrientation()); //for testing
+		//routingStrategy = new ExploreStrategy(currentPosition, getOrientation()); //for testing
 		if (i == 0) {
 			applyForwardAcceleration();
 			i = i + 1;
@@ -48,7 +47,7 @@ public class MyAIController extends CarController{
 		
 		ArrayList<Coordinate> temp  = routingStrategy.AstarPathFinding(); //to be continued....
 		drive(currentPosition, temp.get(0));
-		System.out.println (temp.get(0));
+		//System.out.println (temp.get(0));
 		
 		}
 		
