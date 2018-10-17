@@ -19,47 +19,59 @@ public abstract class RoutingStrategy {
 	}
 
 	/*
-	 * use A star algorithm to find path
-	 * would return an arrayList of coordinate to get to goal state
-	 * if goal state is not reachable, return an empty arrayList<Coordinate>
-	 * if startNode is goal, return arrayList that only contain start coordinate
+	 * use A star algorithm to find path would return an arrayList of coordinate to
+	 * get to goal state if goal state is not reachable, return an empty
+	 * arrayList<Coordinate> if startNode is goal, return arrayList that only
+	 * contain start coordinate
 	 */
 	public ArrayList<Coordinate> AstarPathFinding() {
 		PriorityQueue<Node> openList = new PriorityQueue<>();
 		ArrayList<Coordinate> closedList = new ArrayList<Coordinate>();
 		openList.add(startNode);
 		if (isGoal(startNode.getCoordinate())) {
-			ArrayList<Coordinate>  stop = new ArrayList<Coordinate>();
+			ArrayList<Coordinate> stop = new ArrayList<Coordinate>();
 			stop.add(startNode.getCoordinate());
 			return stop;
 		}
-		
+
 		while (!openList.isEmpty()) {
 			Node currentNode = openList.remove();
 			int currentCost = currentNode.getG();
 			ArrayList<Coordinate> currentPathToTheNode = currentNode.getpathTotheNode();
-			if (closedList.indexOf(currentNode.getCoordinate()) == -1) {
+			if (!containsCoordinate(currentNode.getCoordinate(),closedList)) {
 				closedList.add(currentNode.getCoordinate());
 				if (isGoal(currentNode.getCoordinate())) {
 					return currentPathToTheNode;
 				}
 				ArrayList<Node> successors = getSuccessor(currentNode);
-				for (Node successorNode : successors) {
-					int g = currentNode.getG() + ACTION_COST;
-					int h = heuristic(successorNode.getCoordinate());
-					if (closedList.indexOf(successorNode.getCoordinate()) == -1) {
-						currentPathToTheNode = currentNode.getpathTotheNode(); // get an new deep copy of array
-						currentPathToTheNode.add(successorNode.getCoordinate());
-						int f = g + h ;
-						successorNode.update(g,f,currentPathToTheNode);
-						openList.add(successorNode);
+				if (successors.size() > 0) {
+					for (Node successorNode : successors) {
+						int g = currentNode.getG() + ACTION_COST;
+						int h = heuristic(successorNode.getCoordinate());
+						if (!containsCoordinate(successorNode.getCoordinate(),closedList)) {
+							currentPathToTheNode = currentNode.getpathTotheNode(); // get an new deep copy of array
+							currentPathToTheNode.add(successorNode.getCoordinate());
+							int f = g + h;
+							successorNode.update(g, f, currentPathToTheNode);
+							openList.add(successorNode);
+						}
 					}
-				}
 
+				}
 			}
 
 		}
 		return new ArrayList<Coordinate>();
+	}
+	
+	private boolean containsCoordinate(Coordinate coordinate,ArrayList<Coordinate> arrayOfCoordinate){
+		if(arrayOfCoordinate.size() == 0)
+			return false;
+		for (Coordinate temp: arrayOfCoordinate) {
+			if (temp.equals(coordinate)) 
+				return true;
+		}
+		return false;
 	}
 
 	public ArrayList<Node> getSuccessor(Node node) {
@@ -89,6 +101,11 @@ public abstract class RoutingStrategy {
 			default:
 				successorCoordinate = new Coordinate(x, y); // should never happen
 			}
+//			System.out.println(direction);
+//			System.out.println(successorCoordinate);
+			if (successorCoordinate.x < 0 || successorCoordinate.y < 0) {
+				continue;
+			}
 			MapTile successorTile = ExploreMap.getInstance().getExploredMap().get(successorCoordinate).getMapTile();
 			if (!successorTile.isType(MapTile.Type.WALL)) {
 				if (successorTile.isType(MapTile.Type.TRAP) && ((TrapTile) successorTile).getTrap().equals("mud")) {
@@ -97,7 +114,6 @@ public abstract class RoutingStrategy {
 				Node successorNode = new Node(successorCoordinate, direction);
 				successor.add(successorNode);
 			}
-
 		}
 
 		return successor;
@@ -162,12 +178,12 @@ public abstract class RoutingStrategy {
 			}
 			return temp;
 		}
-		
+
 		void update(int g, int f, ArrayList<Coordinate> pathTotheNode) {
-			this.g= g;
+			this.g = g;
 			this.f = f;
 			this.pathTotheNode = pathTotheNode;
-			
+
 		}
 
 		int getF() {
