@@ -23,7 +23,6 @@ public class StrategyFactory {
 		
 		boolean heal = findHealthTrap(currentView);
 		float health = controller.getHealth();
-		//removeDuplicateKeys();
 		ExploreMap.getInstance().updateMap(currentView);
 		HashMap<Coordinate, RecordTile> myMap = ExploreMap.getInstance().getExploredMap();
 		MapTile mapTile = myMap.get(currentPosition).getMapTile();
@@ -39,8 +38,6 @@ public class StrategyFactory {
 		
 	
 		if(!newKeyLocation.isEmpty()) {
-			System.out.println(4);
-			//routingStrategy = new KeyMixStrategy(currentPosition, getOrientation(), getHealth(), newKeyLocation);			
 			routingStrategy = new FindKeyStrategy(currentPosition, orientation, controller.getKeys());
 			temp  = routingStrategy.AstarPathFinding();
 			if (temp.size() != 0) {	
@@ -51,7 +48,6 @@ public class StrategyFactory {
 
 		
 		if (controller.getKeys().size() == controller.numKeys()) {
-			System.out.println(7);
 			routingStrategy = new ExitMixStrategy(currentPosition, orientation, health);
 		} else {
 
