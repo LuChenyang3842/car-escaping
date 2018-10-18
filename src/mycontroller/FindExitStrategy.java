@@ -3,8 +3,21 @@ package mycontroller;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.WorldSpatial.Direction;
-
-//Strategy to find the exit, the goal is to find the exit
+/**
+ * The University of Melbourne
+ * SWEN30006 Software Modelling and Design
+ * FileName: ExploreStrategy.java
+ *
+ *
+ * This class contains Strategy to find the exit, 
+ * the goal is to find the exit
+ *
+ * @author  Chenyang Lu, Leewei Kuo, Xueting Tan
+ * @StudentID 951933, 932975, 948775
+ * @Username  chenyangl5, leeweik1, xuetingt
+ * 
+ * @Date  18/10/2018 
+ */
 public class FindExitStrategy extends RoutingStrategy {
 	
 	public FindExitStrategy(Coordinate currentPosition, Direction orientation) {
