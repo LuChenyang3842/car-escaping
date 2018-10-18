@@ -22,13 +22,6 @@ public class HealStrategy extends RoutingStrategy{
 		} else {
 			return false;
 		}
-		/*if (mapTile.isType(MapTile.Type.TRAP)) {
-			TrapTile trapTile = (TrapTile)mapTile;
-			if(trapTile.getTrap().equals("health")) {
-				return true;
-			}
-		} 
-		return false;*/
 		
 	}
 }
