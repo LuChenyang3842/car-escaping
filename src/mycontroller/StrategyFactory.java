@@ -78,15 +78,11 @@ public class StrategyFactory {
 	
 		//find exit if we have all the keys, otherwise explore the map
 		if (controller.getKeys().size() == controller.numKeys()) {
-			System.out.println(7);
 			routingStrategy = new ExitMixStrategy(currentPosition, orientation, health);
 		} else {
-
 			routingStrategy = new ExploreStrategy(currentPosition, orientation);
 		}
-		temp = routingStrategy.AstarPathFinding();
-		
-		return routingStrategy; //should never happen
+		return routingStrategy; 
 	
 	}
 		
