@@ -13,7 +13,7 @@ import world.WorldSpatial.Direction;
 /**
  * The University of Melbourne
  * SWEN30006 Software Modelling and Design
- * FileName: ExploreStrategy.java
+ * FileName: StrategyFactory.java
  *
  *
  * This class is used to handle the complex logic of strategy, 
