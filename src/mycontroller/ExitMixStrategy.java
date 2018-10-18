@@ -5,20 +5,32 @@ import tiles.MapTile;
 import utilities.Coordinate;
 import world.WorldSpatial.Direction;
 
-//a mix strategy to find the exit
+/**
+ * The University of Melbourne
+ * SWEN30006 Software Modelling and Design
+ * FileName: ExitMixStrategy.java
+ *
+ *
+ * This class contains a mix strategy to find the exit 
+ * 
+ *
+ * @author  Chenyang Lu, Leewei Kuo, Xueting Tan
+ * @StudentID 951933, 932975, 948775
+ * @Username  chenyangl5, leeweik1, xuetingt
+ * 
+ * @Date  18/10/2018 
+ */
 public class ExitMixStrategy extends RoutingStrategy{
-	HealStrategy heal;
-	FindExitStrategy findExit;
-	float health;
-	Coordinate currentCoordinate;
-	MapTile currentMapTile;
+	private HealStrategy heal;
+	private FindExitStrategy findExit;
+	private float health;
+	private MapTile currentMapTile;
 	
 	public ExitMixStrategy(Coordinate coordinate, Direction currentOrientation, float health) {
 		super(coordinate, currentOrientation);
 		heal = new HealStrategy(coordinate, currentOrientation);
 		findExit = new FindExitStrategy(coordinate, currentOrientation);
 		this.health = health;
-		this.currentCoordinate = coordinate;
 		this.currentMapTile = ExploreMap.getInstance().getExploredMap().get(coordinate).getMapTile();
 	}
 
@@ -28,10 +40,8 @@ public class ExitMixStrategy extends RoutingStrategy{
 	 */
 	@Override
 	public boolean isGoal(Coordinate c) {
-		RecordTile recordTile = ExploreMap.getInstance().getExploredMap().get(c);
-		//MapTile mapTile = recordTile.getMapTile();
 		int healDistance = heal.AstarPathFinding().size();
-		//heal when standing on HealthTrap or close to HealthTrap(compare to exit)
+		
 		if ((currentMapTile instanceof HealthTrap && (health < 100)) || 
 				((health < 50) && (healDistance != 0) && (healDistance < findExit.AstarPathFinding().size()))) {
 			return heal.isGoal(c);
