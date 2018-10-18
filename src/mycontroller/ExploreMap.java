@@ -7,6 +7,21 @@ import world.World;
 import tiles.MapTile;
 import utilities.Coordinate;
 
+/**
+ * The University of Melbourne
+ * SWEN30006 Software Modelling and Design
+ * FileName: ExploreMap.java
+ *
+ *
+ * This class is used to record the real map we have observed
+ * 
+ * @author  Chenyang Lu, Leewei Kuo, Xueting Tan
+ * @StudentID 951933, 932975, 948775
+ * @Username  chenyangl5, leeweik1, xuetingt
+ * 
+ * @Date  18/10/2018 
+ */
+
 public class ExploreMap {
 	private HashMap<Coordinate, RecordTile> newMap = new HashMap<Coordinate, RecordTile>();
 	public static ExploreMap instance;
@@ -24,6 +39,12 @@ public class ExploreMap {
 		}
 	}
 	
+	/**
+	 * update the map with currentView, set explored variable of 
+	 * RecordTile to true
+	 * 
+	 * @param currentView the currentView of car
+	 */
 	public synchronized void updateMap(HashMap<Coordinate, MapTile> currentView) {
 		Iterator iter = currentView.entrySet().iterator();
 		while(iter.hasNext()) {
@@ -37,6 +58,11 @@ public class ExploreMap {
 		}
 	}
 	
+	/**
+	 * initialize the map with walls and roads,
+	 * the explored variable of RecordTile is 
+	 * set to false
+	 */
 	private synchronized void getInitialMap(){
 		HashMap<Coordinate, MapTile> map = World.getMap();
 		Iterator iter = map.entrySet().iterator();
@@ -53,5 +79,4 @@ public class ExploreMap {
 	public synchronized HashMap<Coordinate, RecordTile> getExploredMap(){
 		return newMap;
 	}
-	
 }
