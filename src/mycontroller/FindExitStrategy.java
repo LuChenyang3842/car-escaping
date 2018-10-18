@@ -6,7 +6,7 @@ import world.WorldSpatial.Direction;
 /**
  * The University of Melbourne
  * SWEN30006 Software Modelling and Design
- * FileName: ExploreStrategy.java
+ * FileName: FindExitStrategy.java
  *
  *
  * This class contains Strategy to find the exit, 
