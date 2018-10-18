@@ -13,82 +13,23 @@ import utilities.Coordinate;
 import world.Car;
 import world.WorldSpatial.Direction;
 
-public class MyAIController extends CarController{
+public class MyAIController extends CarController
 	private HashMap<Coordinate, Integer> newKeyLocation;
 	private RoutingStrategy routingStrategy;
-	private int i = 0;
+	private StrategyFactory factory;
 	public MyAIController(Car car) {
 		super(car);
 		newKeyLocation = new HashMap<Coordinate, Integer>();
+		factory = new StrategyFactory(this);
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		HashMap<Coordinate, MapTile> currentView = getView();
-		Coordinate currentPosition = new Coordinate(getPosition());
-		findKeys(currentView);
-		boolean heal = findHealthTrap(currentView);
-		//removeDuplicateKeys();
-		ExploreMap.getInstance().updateMap(currentView);
-		HashMap<Coordinate, RecordTile> myMap = ExploreMap.getInstance().getExploredMap();
-		MapTile mapTile = myMap.get(currentPosition).getMapTile();
-		ArrayList<Coordinate> temp = new ArrayList<Coordinate>();
-		
-		if ((mapTile instanceof HealthTrap && (getHealth() < 100)) || ((getHealth() < 50) && heal)) {
-			routingStrategy = new HealStrategy(currentPosition, getOrientation());
-			temp  = routingStrategy.AstarPathFinding(); //to be continued....				
-			if (temp.size() != 0) {
-				drive(currentPosition, temp.get(0));
-			}
-		}
-		
-		if (temp.size() == 0) {
-			if(!newKeyLocation.isEmpty()) {
-				System.out.println(4);
-				//routingStrategy = new KeyMixStrategy(currentPosition, getOrientation(), getHealth(), newKeyLocation);			
-				routingStrategy = new FindKeyStrategy(currentPosition, getOrientation(), getKeys());
-			} else if (getKeys().size() == numKeys()) {
-				System.out.println(5);
-				routingStrategy = new ExitMixStrategy(currentPosition, getOrientation(), getHealth());
-			} else {
-				System.out.println(6);
-				routingStrategy = new ExploreStrategy(currentPosition, getOrientation());
-			}
-			temp  = routingStrategy.AstarPathFinding();
-			if (temp.size() != 0) {	
-				drive(currentPosition, temp.get(0));
-			}
-		}
-		
-		
-		//routingStrategy = new ExploreStrategy(currentPosition, getOrientation()); //for testing
-		if (getSpeed() == 0 && getHealth() == 100) {
-			applyForwardAcceleration();
-		}
-		if (temp.size() == 0) {
-			if (getKeys().size() == numKeys()) {
-				System.out.println(7);
-				routingStrategy = new ExitMixStrategy(currentPosition, getOrientation(), getHealth());
-			} else {
-				System.out.println(8);
-				routingStrategy = new ExploreStrategy(currentPosition, getOrientation());
-			}
-			temp  = routingStrategy.AstarPathFinding();
-			if (temp.size() != 0) {	
-				drive(currentPosition, temp.get(0));
-			}
-		}
-		//temp  = routingStrategy.AstarPathFinding(); //to be continued....				
-		//drive(currentPosition, temp.get(0));
-		
-		//System.out.println (temp.get(0));
-		System.out.println("i:              "+ i);
-		i++;
-		
-		
-		
-		
+		findKeys(getView());
+		ExploreMap.getInstance().updateMap(getView());
+		routingStrategy = factory.getStrategy(newKeyLocation);
+		ArrayList<Coordinate> path = routingStrategy.AstarPathFinding();
+		drive(new Coordinate(getPosition()), path.get(0));
 	}
 	
 	
@@ -132,9 +73,6 @@ public class MyAIController extends CarController{
 			applyBrake();
 			break;
 		}
-		
-		// TODO Auto-generated method stub
-		
 	}
 
 	private void goNorth() {
@@ -203,18 +141,6 @@ public class MyAIController extends CarController{
 		
 	}
 	
-	//remove the key we already have
-	/*private void removeDuplicateKeys() {
-		Iterator iter = newKeyLocation.entrySet().iterator();
-		while(iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			Coordinate coordinate = (Coordinate) entry.getKey();
-			int key = (int) entry.getValue();
-			if (getKeys().contains(key)) {
-				newKeyLocation.remove(coordinate);
-			}
-		}
-	}*/
 	
 	//find new key in currentView(if any) and record its coordinate
 	private void findKeys(HashMap<Coordinate, MapTile> currentView) {
@@ -233,17 +159,4 @@ public class MyAIController extends CarController{
 		}
 	}
 	
-	//find new key in currentView(if any) and record its coordinate
-	private boolean findHealthTrap(HashMap<Coordinate, MapTile> currentView) {
-		Iterator iter = currentView.entrySet().iterator();
-		while(iter.hasNext()) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			Coordinate coordinate = (Coordinate) entry.getKey();
-			MapTile mapTile = (MapTile) entry.getValue();
-			if (mapTile instanceof HealthTrap) {
-				return true;
-			}
-		}
-		return false;
-	}
 }
