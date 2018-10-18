@@ -6,33 +6,56 @@ import java.util.Iterator;
 import java.util.Map;
 
 import controller.CarController;
-import tiles.HealthTrap;
 import tiles.LavaTrap;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.Car;
 import world.WorldSpatial.Direction;
 
+/**
+ * The University of Melbourne
+ * SWEN30006 Software Modelling and Design
+ * FileName: MyAIController.java
+ *
+ *
+ * This class is used handle the control of car
+ * 
+ * @author  Chenyang Lu, Leewei Kuo, Xueting Tan
+ * @StudentID 951933, 932975, 948775
+ * @Username  chenyangl5, leeweik1, xuetingt
+ * 
+ * @Date  18/10/2018 
+ */
 public class MyAIController extends CarController{
-	private HashMap<Coordinate, Integer> newKeyLocation;
+	private HashMap<Coordinate, Integer> keyLocation;
 	private RoutingStrategy routingStrategy;
 	private StrategyFactory factory;
 	public MyAIController(Car car) {
 		super(car);
-		newKeyLocation = new HashMap<Coordinate, Integer>();
+		keyLocation = new HashMap<Coordinate, Integer>();
 		factory = new StrategyFactory(this);
 	}
 
 	@Override
 	public void update() {
+		
+		//update keyLocation with currentView
 		findKeys(getView());
+		
+		//update ExploreMap with currentView
 		ExploreMap.getInstance().updateMap(getView());
-		routingStrategy = factory.getStrategy(newKeyLocation);
+		
+		//find strategy with StrategyFactory
+		routingStrategy = factory.getStrategy(keyLocation);
+		
+		//find the path using the chosen Strategy
 		ArrayList<Coordinate> path = routingStrategy.AstarPathFinding();
+		
+		//drive 1 step
 		drive(new Coordinate(getPosition()), path.get(0));
 	}
 	
-	
+	//drive from start coordinate to goal coordinate
 	private void drive(Coordinate start, Coordinate goal) {
 		int startX =  start.x;
 		int startY = start.y;
@@ -141,7 +164,6 @@ public class MyAIController extends CarController{
 		
 	}
 	
-	
 	//find new key in currentView(if any) and record its coordinate
 	private void findKeys(HashMap<Coordinate, MapTile> currentView) {
 		Iterator iter = currentView.entrySet().iterator();
@@ -153,10 +175,9 @@ public class MyAIController extends CarController{
 				LavaTrap lavaTrap = (LavaTrap) mapTile;
 				int key = lavaTrap.getKey();
 				if((key != 0) && (!getKeys().contains(key))) {
-					newKeyLocation.put(coordinate, key);
+					keyLocation.put(coordinate, key);
 				}
 			}
 		}
-	}
-	
+	}	
 }
