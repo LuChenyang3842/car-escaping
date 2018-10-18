@@ -13,7 +13,7 @@ import utilities.Coordinate;
 import world.Car;
 import world.WorldSpatial.Direction;
 
-public class MyAIController extends CarController
+public class MyAIController extends CarController{
 	private HashMap<Coordinate, Integer> newKeyLocation;
 	private RoutingStrategy routingStrategy;
 	private StrategyFactory factory;
