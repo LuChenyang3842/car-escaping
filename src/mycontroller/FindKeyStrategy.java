@@ -9,7 +9,7 @@ import world.WorldSpatial.Direction;
 /**
  * The University of Melbourne
  * SWEN30006 Software Modelling and Design
- * FileName: ExploreStrategy.java
+ * FileName: FindKeyStrategy.java
  *
  *
  * This class contains Strategy to find the key, 
