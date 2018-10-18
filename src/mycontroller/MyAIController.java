@@ -6,17 +6,17 @@ import java.util.Iterator;
 import java.util.Map;
 
 import controller.CarController;
+import tiles.HealthTrap;
 import tiles.LavaTrap;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.Car;
 import world.WorldSpatial.Direction;
 
-public class MyAIController extends CarController {
+public class MyAIController extends CarController{
 	private HashMap<Coordinate, Integer> newKeyLocation;
 	private RoutingStrategy routingStrategy;
 	private int i = 0;
-
 	public MyAIController(Car car) {
 		super(car);
 		newKeyLocation = new HashMap<Coordinate, Integer>();
@@ -79,35 +79,43 @@ public class MyAIController extends CarController {
 				drive(currentPosition, temp.get(0));
 			}
 		}
-
+		//temp  = routingStrategy.AstarPathFinding(); //to be continued....				
+		//drive(currentPosition, temp.get(0));
+		
+		//System.out.println (temp.get(0));
 		System.out.println("i:              "+ i);
 		i++;
+		
+		
+		
+		
 	}
-
-
+	
+	
 	private void drive(Coordinate start, Coordinate goal) {
-		int startX = start.x;
+		int startX =  start.x;
 		int startY = start.y;
 		int goalX = goal.x;
 		int goalY = goal.y;
 		if (goalX == startX + 1) {
-			System.out.println(1);
 			goEast();
-		} else if (goalX == startX - 1) {
+		}
+		else if (goalX == startX - 1) {
 			goWest();
-		} else if (goalY == startY + 1) {
+		}
+		else if(goalY == startY+ 1) {
 			goNorth();
-		} else if (goalY == startY - 1) {
+		}else if (goalY == startY- 1) {
 			goSouth();
-		} else {
+		}else {
 			applyBrake();
 		}
-
+		
 	}
-
+	
 	private void goSouth() {
 		Direction currentOrientation = getOrientation();
-		switch (currentOrientation) {
+		switch(currentOrientation){
 		case EAST:
 			turnRight();
 			break;
@@ -124,14 +132,14 @@ public class MyAIController extends CarController {
 			applyBrake();
 			break;
 		}
-
+		
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	private void goNorth() {
 		Direction currentOrientation = getOrientation();
-		switch (currentOrientation) {
+		switch(currentOrientation){
 		case EAST:
 			turnLeft();
 			break;
@@ -148,12 +156,12 @@ public class MyAIController extends CarController {
 			applyBrake();
 			break;
 		}
-
+		
 	}
 
 	private void goEast() {
 		Direction currentOrientation = getOrientation();
-		switch (currentOrientation) {
+		switch(currentOrientation){
 		case EAST:
 			applyForwardAcceleration();
 			break;
@@ -170,12 +178,12 @@ public class MyAIController extends CarController {
 			applyBrake();
 			break;
 		}
-
+		
 	}
 
 	private void goWest() {
 		Direction currentOrientation = getOrientation();
-		switch (currentOrientation) {
+		switch(currentOrientation){
 		case EAST:
 			applyReverseAcceleration();
 			break;
@@ -192,13 +200,13 @@ public class MyAIController extends CarController {
 			applyBrake();
 			break;
 		}
-
+		
 	}
-
-	// remove the key we already have
-	private void removeDuplicateKeys() {
+	
+	//remove the key we already have
+	/*private void removeDuplicateKeys() {
 		Iterator iter = newKeyLocation.entrySet().iterator();
-		while (iter.hasNext()) {
+		while(iter.hasNext()) {
 			Map.Entry entry = (Map.Entry) iter.next();
 			Coordinate coordinate = (Coordinate) entry.getKey();
 			int key = (int) entry.getValue();
@@ -206,23 +214,36 @@ public class MyAIController extends CarController {
 				newKeyLocation.remove(coordinate);
 			}
 		}
-	}
-
-	// find new key in currentView(if any) and record its coordinate
+	}*/
+	
+	//find new key in currentView(if any) and record its coordinate
 	private void findKeys(HashMap<Coordinate, MapTile> currentView) {
 		Iterator iter = currentView.entrySet().iterator();
-		while (iter.hasNext()) {
+		while(iter.hasNext()) {
 			Map.Entry entry = (Map.Entry) iter.next();
 			Coordinate coordinate = (Coordinate) entry.getKey();
 			MapTile mapTile = (MapTile) entry.getValue();
 			if (mapTile instanceof LavaTrap) {
 				LavaTrap lavaTrap = (LavaTrap) mapTile;
 				int key = lavaTrap.getKey();
-				if ((key != 0) && (!getKeys().contains(key))) {
+				if((key != 0) && (!getKeys().contains(key))) {
 					newKeyLocation.put(coordinate, key);
 				}
 			}
 		}
 	}
-
+	
+	//find new key in currentView(if any) and record its coordinate
+	private boolean findHealthTrap(HashMap<Coordinate, MapTile> currentView) {
+		Iterator iter = currentView.entrySet().iterator();
+		while(iter.hasNext()) {
+			Map.Entry entry = (Map.Entry) iter.next();
+			Coordinate coordinate = (Coordinate) entry.getKey();
+			MapTile mapTile = (MapTile) entry.getValue();
+			if (mapTile instanceof HealthTrap) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
