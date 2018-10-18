@@ -30,6 +30,7 @@ public class MyAIController extends CarController{
 	private HashMap<Coordinate, Integer> keyLocation;
 	private RoutingStrategy routingStrategy;
 	private StrategyFactory factory;
+	private final int FIRST_STEP = 0;
 	public MyAIController(Car car) {
 		super(car);
 		keyLocation = new HashMap<Coordinate, Integer>();
@@ -52,7 +53,7 @@ public class MyAIController extends CarController{
 		ArrayList<Coordinate> path = routingStrategy.AstarPathFinding();
 		
 		//drive 1 step
-		drive(new Coordinate(getPosition()), path.get(0));
+		drive(new Coordinate(getPosition()), path.get(FIRST_STEP));
 	}
 	
 	//drive from start coordinate to goal coordinate
