@@ -18,11 +18,11 @@ The routing algorithm we used here is A* heuristic search. The basic idea is tha
 The A* algorithm would return a list of coordinates that navigates the car from current location to goal location. However, in each round, only the first coordinate returned by A* algorithm is used to navigate the car.
 The reason for using A* is that A* is very suitable for strategy pattern. For different strategies, we only need to define different goal states (i.e. target coordinate), which makes the system highly extensible
 
-*The algorithm can be found in src ---> mycontroller ---> routing strategy*
+**The algorithm can be found in src ---> mycontroller ---> routing strategy**
 
 # Design pattern implemented in the project
 * singleton pattern
 * strategy pattern
 * Factory pattern
 * controller pattern
-Detail of design pattern can be find in report.pdf
+**Detail of design pattern can be find in report.pdf**
