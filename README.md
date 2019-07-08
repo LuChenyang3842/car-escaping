@@ -24,5 +24,5 @@ The reason for using A* is that A* is very suitable for strategy pattern. For di
 * singleton pattern
 * strategy pattern
 * Factory pattern
-* controller pattern
+* controller pattern <br/>
 **Detail of design pattern can be find in report.pdf**
