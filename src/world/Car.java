@@ -23,9 +23,7 @@ import utilities.Coordinate;
 import world.WorldSpatial.*;
 
 /**
- * This class provides functionality for use within the simulation system. It is NOT intended to be
- * read or understood for SWEN30006 Part C. The lack of comments is intended to reinforce this.
- * We take no responsibility if you use time unproductively trying to understand this code.
+ * This class provides functionality for use within the simulation system. 
  */
 public class Car extends Sprite{
 
